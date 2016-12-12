@@ -1,0 +1,50 @@
+schema {
+  query: Query
+}
+
+type App implements Node {
+  id: ID!
+  name: String
+  categories(names: [String]): [Category]
+}
+
+type Category implements Node {
+  id: ID!
+  categoryID: String
+  name: String
+  description: String
+  events(after: String, first: Int, before: String, last: Int): EventConnection
+}
+
+type Event implements Node {
+  id: ID!
+  description: String
+  name: String
+}
+
+type EventConnection {
+  pageInfo: PageInfo!
+  edges: [EventEdge]
+}
+
+type EventEdge {
+  node: Event
+  cursor: String!
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  app: App
+  categories(names: [String]): [Category]
+  node(id: ID!): Node
+}
